@@ -1,5 +1,7 @@
 # 🎄 Christmas Magic - 圣诞魔法
 
+**中文** | [English](README_EN.md)
+
 一个基于 Three.js 和 MediaPipe 的 3D 圣诞树粒子特效项目，支持手势交互控制。
 
 ## ✨ 功能特性
@@ -93,7 +95,8 @@ christmas-magic/
 ├── index.html      # 主 HTML 文件，包含着色器代码
 ├── style.css       # 样式文件
 ├── script.js       # 主要 JavaScript 逻辑
-└── README.md       # 项目说明
+├── README.md       # 中文文档
+└── README_EN.md    # 英文文档
 ```
 
 ## 🛠️ 技术栈
