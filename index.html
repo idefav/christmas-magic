@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Christmas Tree</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- MediaPipe -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+    
+    <!-- Three.js Import Map -->
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+        }
+    }
+    </script>
+</head>
+<body>
+    <!-- Title -->
+    <h1 id="title">MERRY CHRISTMAS</h1>
+    
+    <!-- Three.js Canvas -->
+    <canvas id="three-canvas"></canvas>
+    
+    <!-- Hand Cursor -->
+    <div id="cursor" class="cursor hidden"></div>
+    
+    <!-- MediaPipe Video Elements -->
+    <video id="input_video" style="display:none"></video>
+    <canvas id="output_canvas"></canvas>
+    
+    <!-- Loading -->
+    <div id="loading">✨ Loading Magic... ✨</div>
+
+    <!-- Vertex Shader for Tree Particles -->
+    <script id="vertexShader" type="x-shader/x-vertex">
+        uniform float uTime;
+        uniform float uPixelRatio;
+        attribute float aRandom;
+        attribute vec3 aColor;
+        varying vec3 vColor;
+        varying float vAlpha;
+        
+        void main() {
+            vColor = aColor;
+            
+            vec4 modelPosition = modelMatrix * vec4(position, 1.0);
+            vec4 viewPosition = viewMatrix * modelPosition;
+            vec4 projectedPosition = projectionMatrix * viewPosition;
+            
+            gl_Position = projectedPosition;
+            
+            // Size with distance attenuation
+            float size = 35.0 * uPixelRatio;
+            
+            // Twinkle effect based on time and random offset
+            float twinkle = sin(uTime * 3.0 + aRandom * 6.28318) * 0.3 + 0.7;
+            size *= twinkle;
+            
+            // Size attenuation
+            gl_PointSize = size * (1.0 / -viewPosition.z);
+            
+            // Alpha variation for twinkle
+            vAlpha = 0.8 + 0.2 * sin(uTime * 2.0 + aRandom * 3.14159);
+        }
+    </script>
+
+    <!-- Fragment Shader for Tree Particles -->
+    <script id="fragmentShader" type="x-shader/x-fragment">
+        varying vec3 vColor;
+        varying float vAlpha;
+        
+        void main() {
+            // Circular particle with soft edge
+            vec2 center = gl_PointCoord - vec2(0.5);
+            float dist = length(center);
+            
+            // Discard pixels outside circle
+            if (dist > 0.5) discard;
+            
+            // Soft glow effect - radial gradient
+            float alpha = 1.0 - smoothstep(0.0, 0.5, dist);
+            alpha *= vAlpha;
+            
+            // Add bright center
+            float core = 1.0 - smoothstep(0.0, 0.2, dist);
+            vec3 finalColor = vColor + vec3(core * 0.5);
+            
+            gl_FragColor = vec4(finalColor, alpha);
+        }
+    </script>
+
+    <!-- Vertex Shader for Star Field -->
+    <script id="starVertexShader" type="x-shader/x-vertex">
+        uniform float uTime;
+        attribute float aRandom;
+        varying float vAlpha;
+        
+        void main() {
+            vec4 modelPosition = modelMatrix * vec4(position, 1.0);
+            vec4 viewPosition = viewMatrix * modelPosition;
+            vec4 projectedPosition = projectionMatrix * viewPosition;
+            
+            gl_Position = projectedPosition;
+            
+            // Subtle twinkle
+            float twinkle = sin(uTime * 0.5 + aRandom * 6.28318) * 0.3 + 0.7;
+            gl_PointSize = (2.0 + aRandom * 2.0) * twinkle;
+            
+            vAlpha = 0.5 + 0.5 * twinkle;
+        }
+    </script>
+
+    <!-- Fragment Shader for Star Field -->
+    <script id="starFragmentShader" type="x-shader/x-fragment">
+        varying float vAlpha;
+        
+        void main() {
+            vec2 center = gl_PointCoord - vec2(0.5);
+            float dist = length(center);
+            
+            if (dist > 0.5) discard;
+            
+            float alpha = 1.0 - smoothstep(0.0, 0.5, dist);
+            alpha *= vAlpha;
+            
+            gl_FragColor = vec4(1.0, 1.0, 1.0, alpha);
+        }
+    </script>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>

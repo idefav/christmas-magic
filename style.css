@@ -1,0 +1,208 @@
+:root {
+    --gold: #ffd700;
+    --gold-light: #fff8dc;
+    --bg-dark: #000000;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    overflow: hidden;
+    background-color: var(--bg-dark);
+    font-family: 'Times New Roman', 'Georgia', serif;
+    color: white;
+    user-select: none;
+}
+
+/* Title */
+#title {
+    position: fixed;
+    top: 6%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    
+    color: var(--gold);
+    font-size: clamp(1.5rem, 5vw, 3.5rem);
+    font-weight: 400;
+    letter-spacing: 0.4em;
+    text-align: center;
+    white-space: nowrap;
+    
+    text-shadow: 
+        0 0 10px var(--gold),
+        0 0 20px var(--gold),
+        0 0 40px rgba(255, 215, 0, 0.6),
+        0 0 80px rgba(255, 215, 0, 0.4);
+    
+    animation: titleGlow 3s ease-in-out infinite;
+}
+
+@keyframes titleGlow {
+    0%, 100% {
+        text-shadow: 
+            0 0 10px var(--gold),
+            0 0 20px var(--gold),
+            0 0 40px rgba(255, 215, 0, 0.6),
+            0 0 80px rgba(255, 215, 0, 0.4);
+    }
+    50% {
+        text-shadow: 
+            0 0 15px var(--gold),
+            0 0 30px var(--gold),
+            0 0 60px rgba(255, 215, 0, 0.8),
+            0 0 100px rgba(255, 215, 0, 0.6);
+    }
+}
+
+/* Three.js Canvas */
+#three-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+}
+
+/* Hand Cursor */
+.cursor {
+    position: fixed;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s ease-out;
+    
+    background: radial-gradient(
+        circle,
+        rgba(255, 215, 0, 0.9) 0%,
+        rgba(255, 215, 0, 0.4) 40%,
+        transparent 70%
+    );
+    
+    box-shadow: 
+        0 0 15px var(--gold),
+        0 0 30px rgba(255, 215, 0, 0.5);
+}
+
+.cursor::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 8px;
+    height: 8px;
+    background: var(--gold-light);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--gold);
+}
+
+.cursor.hidden {
+    display: none;
+}
+
+.cursor.active {
+    transform: translate(-50%, -50%) scale(1.5);
+}
+
+/* MediaPipe Debug Canvas */
+#output_canvas {
+    position: fixed;
+    bottom: 15px;
+    right: 15px;
+    width: 180px;
+    height: 135px;
+    border-radius: 12px;
+    border: 2px solid rgba(255, 215, 0, 0.3);
+    opacity: 0.8;
+    pointer-events: none;
+    z-index: 100;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+/* Loading */
+#loading {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    
+    font-size: clamp(1rem, 3vw, 1.5rem);
+    color: var(--gold);
+    letter-spacing: 0.2em;
+    
+    text-shadow: 
+        0 0 10px var(--gold),
+        0 0 20px rgba(255, 215, 0, 0.5);
+    
+    animation: loadingPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes loadingPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+#loading.hidden {
+    display: none;
+}
+
+/* Gesture Hints (optional overlay) */
+.gesture-hint {
+    position: fixed;
+    bottom: 160px;
+    right: 15px;
+    width: 180px;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.8);
+    z-index: 100;
+}
+
+.gesture-hint h4 {
+    color: var(--gold);
+    margin-bottom: 8px;
+    font-size: 0.85rem;
+}
+
+.gesture-hint ul {
+    list-style: none;
+    padding: 0;
+}
+
+.gesture-hint li {
+    margin: 4px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.gesture-hint .icon {
+    font-size: 1rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    #output_canvas {
+        width: 120px;
+        height: 90px;
+        bottom: 10px;
+        right: 10px;
+    }
+    
+    .gesture-hint {
+        display: none;
+    }
+}
