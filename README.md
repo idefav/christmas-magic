@@ -1,64 +1,64 @@
-# 🎄 Christmas Magic - 圣诞魔法
+# 🎄 Christmas Magic
 
-**中文** | [English](README_EN.md)
+**English** | [中文版](README_ZH.md)
 
-一个基于 Three.js 和 MediaPipe 的 3D 圣诞树粒子特效项目，支持手势交互控制。
+A 3D Christmas tree particle effects project based on Three.js and MediaPipe, with gesture interaction control.
 
-## ✨ 功能特性
+## ✨ Features
 
-- 🌟 **粒子圣诞树** - 2500+ 金色粒子组成的 3D 圣诞树，带有层次感和树干
-- 🎁 **圣诞礼包** - 20个不同颜色和大小的 3D 礼包漂浮在树中
-- 📷 **照片墙** - 15张照片随机分布在粒子中，可点击放大
-- ⭐ **闪烁星星** - 树顶星星 + 背景星空 + 离散闪烁粒子
-- 🖐️ **手势控制** - 通过摄像头识别手势进行交互
-- 💫 **物理效果** - 粒子具有惯性、重力、阻尼等物理特性
-- 🌸 **Bloom 特效** - 后处理发光效果
+- 🌟 **Particle Christmas Tree** - 2500+ golden particles forming a 3D Christmas tree with layers and trunk
+- 🎁 **Christmas Gifts** - 20 different colored and sized 3D gift boxes floating in the tree
+- 📷 **Photo Wall** - 15 photos randomly distributed among particles, clickable to enlarge
+- ⭐ **Twinkling Stars** - Tree-top star + starry background + scattered twinkling particles
+- 🖐️ **Gesture Control** - Interact through camera-recognized gestures
+- 💫 **Physics Effects** - Particles with inertia, gravity, damping and other physical properties
+- 🌸 **Bloom Effect** - Post-processing glow effect
 
-## 🎮 手势控制
+## 🎮 Gesture Controls
 
-| 手势 | 功能 |
-|------|------|
-| ✋ **张开手掌** | 旋转圣诞树（带惯性）+ 远近缩放（手靠近放大，远离缩小）|
-| ☝️ **食指指向** | 选择照片（悬停 0.5 秒放大）|
-| 🤏 **捏合** | 缩放视图（带惯性）|
-| ✊ **握拳** | 粒子变成球形 |
-| ✌️ **V字手势** | 爆炸/聚合粒子 |
-| 🖱️ **鼠标点击** | 点击照片放大 |
+| Gesture | Function |
+|---------|----------|
+| ✋ **Open Palm** | Rotate tree (with inertia) + zoom in/out (hand closer = zoom in, farther = zoom out) |
+| ☝️ **Point Finger** | Select photo (hover 0.5s to enlarge) |
+| 🤏 **Pinch** | Zoom view (with inertia) |
+| ✊ **Fist** | Transform particles into sphere |
+| ✌️ **V Sign** | Explode/gather particles |
+| 🖱️ **Mouse Click** | Click photo to enlarge |
 
-## 🚀 快速开始
+## 🚀 Quick Start
 
-### 方式一：使用 VS Code Live Server
+### Option 1: VS Code Live Server
 
-1. 在 VS Code 中安装 **Live Server** 扩展
-2. 右键点击 `index.html`
-3. 选择 **Open with Live Server**
-4. 浏览器自动打开 `http://127.0.0.1:5500`
+1. Install **Live Server** extension in VS Code
+2. Right-click on `index.html`
+3. Select **Open with Live Server**
+4. Browser opens automatically at `http://127.0.0.1:5500`
 
-### 方式二：使用 Python HTTP Server
+### Option 2: Python HTTP Server
 
 ```bash
 # Python 3
 cd christmas-magic
 python -m http.server 8080
 
-# 然后打开浏览器访问
+# Then open browser
 # http://localhost:8080
 ```
 
-### 方式三：使用 Node.js
+### Option 3: Node.js
 
 ```bash
-# 安装 http-server（如果没有）
+# Install http-server (if not installed)
 npm install -g http-server
 
-# 运行
+# Run
 cd christmas-magic
 http-server -p 8080
 
-# 访问 http://localhost:8080
+# Visit http://localhost:8080
 ```
 
-### 方式四：使用 PowerShell 简易服务器
+### Option 4: PowerShell Simple Server
 
 ```powershell
 cd christmas-magic
@@ -66,88 +66,88 @@ $listener = New-Object System.Net.HttpListener
 $listener.Prefixes.Add("http://localhost:8080/")
 $listener.Start()
 Write-Host "Server running at http://localhost:8080"
-# 按 Ctrl+C 停止
+# Press Ctrl+C to stop
 ```
 
-## ⚠️ 重要说明
+## ⚠️ Important Notes
 
-1. **必须使用 HTTP 服务器**
-   - 不能直接双击 `index.html` 打开
-   - 因为需要加载 ES 模块和摄像头权限
+1. **Must use HTTP Server**
+   - Cannot open `index.html` directly by double-clicking
+   - ES modules and camera permissions require HTTP server
 
-2. **需要摄像头权限**
-   - 首次打开时浏览器会请求摄像头权限
-   - 请点击"允许"以启用手势控制
+2. **Camera Permission Required**
+   - Browser will request camera permission on first visit
+   - Click "Allow" to enable gesture control
 
-3. **推荐浏览器**
-   - Chrome (推荐)
+3. **Recommended Browsers**
+   - Chrome (Recommended)
    - Edge
    - Firefox
 
-4. **HTTPS 要求**
-   - 如果部署到远程服务器，需要使用 HTTPS
-   - 本地 localhost 可以使用 HTTP
+4. **HTTPS Requirement**
+   - HTTPS is required when deploying to remote servers
+   - HTTP works for localhost
 
-## 📁 项目结构
+## 📁 Project Structure
 
 ```
 christmas-magic/
-├── index.html      # 主 HTML 文件，包含着色器代码
-├── style.css       # 样式文件
-├── script.js       # 主要 JavaScript 逻辑
-├── README.md       # 中文文档
-└── README_EN.md    # 英文文档
+├── index.html      # Main HTML file with shader code
+├── style.css       # Stylesheet
+├── script.js       # Main JavaScript logic
+├── README.md       # English documentation
+└── README_ZH.md    # Chinese documentation
 ```
 
-## 🛠️ 技术栈
+## 🛠️ Tech Stack
 
-- **Three.js v0.160.0** - 3D 渲染引擎
-- **MediaPipe Hands** - 手势识别
-- **GLSL** - 自定义粒子着色器
-- **ES Modules** - JavaScript 模块化
+- **Three.js v0.160.0** - 3D rendering engine
+- **MediaPipe Hands** - Gesture recognition
+- **GLSL** - Custom particle shaders
+- **ES Modules** - JavaScript modularization
 
-## 🎨 自定义配置
+## 🎨 Customization
 
-在 `script.js` 中可以修改 `CONFIG` 对象来调整效果：
+Modify the `CONFIG` object in `script.js` to adjust effects:
 
 ```javascript
 const CONFIG = {
     tree: {
-        particleCount: 2500,  // 粒子数量
-        height: 4,            // 树高度
-        baseRadius: 1.5,      // 底部半径
+        particleCount: 2500,  // Number of particles
+        height: 4,            // Tree height
+        baseRadius: 1.5,      // Base radius
     },
     physics: {
-        gravity: -0.0003,     // 重力
-        damping: 0.95,        // 阻尼
-        returnForce: 0.008,   // 回归力
+        gravity: -0.0003,     // Gravity
+        damping: 0.95,        // Damping
+        returnForce: 0.008,   // Return force
     },
     bloom: {
-        strength: 1.5,        // 发光强度
-        radius: 0.4,          // 发光半径
+        strength: 1.5,        // Glow strength
+        radius: 0.4,          // Glow radius
     },
     // ...
 };
 ```
 
-## 🐛 常见问题
+## 🐛 FAQ
 
-### Q: 手势识别不工作？
-- 确保已允许摄像头权限
-- 检查光线是否充足
-- 保持手在摄像头可见范围内
+### Q: Gesture recognition not working?
+- Ensure camera permission is granted
+- Check if lighting is sufficient
+- Keep hands visible in camera view
 
-### Q: 页面空白？
-- 确保使用 HTTP 服务器而非直接打开文件
-- 检查浏览器控制台是否有错误
-- 确保网络可以访问 CDN 资源
+### Q: Blank page?
+- Make sure to use HTTP server instead of opening file directly
+- Check browser console for errors
+- Ensure network can access CDN resources
 
-### Q: 性能卡顿？
-- 降低 `CONFIG.tree.particleCount` 粒子数量
-- 降低 `CONFIG.bloom.strength` 发光强度
-- 关闭其他占用资源的程序
+### Q: Performance issues?
+- Reduce `CONFIG.tree.particleCount` particle count
+- Lower `CONFIG.bloom.strength` glow intensity
+- Close other resource-intensive programs
 
-## 📜 许可证
+## 📜 License
 
 MIT License
 
