@@ -9,13 +9,17 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 
-// === DOM Elements ===
-const canvas = document.getElementById('three-canvas');
-const cursor = document.getElementById('cursor');
-const loading = document.getElementById('loading');
-const videoElement = document.getElementById('input_video');
-const canvasElement = document.getElementById('output_canvas');
-const canvasCtx = canvasElement.getContext('2d');
+// === DOM Elements (lazy initialization) ===
+let canvas, cursor, loading, videoElement, canvasElement, canvasCtx;
+
+function initDOMElements() {
+    canvas = document.getElementById('three-canvas');
+    cursor = document.getElementById('cursor');
+    loading = document.getElementById('loading');
+    videoElement = document.getElementById('input_video');
+    canvasElement = document.getElementById('output_canvas');
+    canvasCtx = canvasElement.getContext('2d');
+}
 
 // === Three.js Variables ===
 let scene, camera, renderer, composer;
@@ -119,7 +123,10 @@ const gestureHandlers = {
 // Three.js Scene Initialization
 // ============================================
 
-function initThreeScene() {
+export function initThreeScene() {
+    // Initialize DOM elements first
+    initDOMElements();
+    
     // Scene
     scene = new THREE.Scene();
     scene.background = new THREE.Color(0x000000);
@@ -1381,7 +1388,7 @@ function onWindowResize() {
 // MediaPipe Hands Integration
 // ============================================
 
-function onResults(results) {
+export function onResults(results) {
     // Hide loading
     if (!loading.classList.contains('hidden')) {
         loading.classList.add('hidden');
@@ -1409,28 +1416,6 @@ function onResults(results) {
     
     canvasCtx.restore();
 }
-
-const hands = new Hands({
-    locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`
-});
-
-hands.setOptions({
-    maxNumHands: 1,
-    modelComplexity: 1,
-    minDetectionConfidence: 0.7,
-    minTrackingConfidence: 0.7
-});
-
-hands.onResults(onResults);
-
-// Camera setup
-const handCamera = new Camera(videoElement, {
-    onFrame: async () => {
-        await hands.send({ image: videoElement });
-    },
-    width: 640,
-    height: 480
-});
 
 // ============================================
 // Gesture Recognition & Control
@@ -1782,19 +1767,16 @@ function resetView() {
 }
 
 // ============================================
-// Initialization
+// Initialization (exported for main.js)
 // ============================================
 
-function init() {
+export function init() {
     // Set canvas size for debug view
     canvasElement.width = 640;
     canvasElement.height = 480;
     
     // Initialize Three.js scene
     initThreeScene();
-    
-    // Start hand tracking camera
-    handCamera.start();
     
     console.log('🎄 3D Christmas Tree initialized!');
     console.log('Gestures:');
@@ -1804,11 +1786,4 @@ function init() {
     console.log('  ✊ Fist - Transform to sphere / Release to restore tree');
     console.log('  ✌️ V-Sign - Explode / Gather particles');
     console.log('  🖱️ Click - Click on photo to expand');
-}
-
-// Start when DOM is ready
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-} else {
-    init();
 }
